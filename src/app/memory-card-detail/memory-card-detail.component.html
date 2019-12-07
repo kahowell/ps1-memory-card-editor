@@ -1,0 +1,47 @@
+<mat-expansion-panel class="memory-card">
+  
+  <mat-expansion-panel-header cdkDropList (cdkDropListDropped)="drop($event)" [cdkDropListData]="card">
+    <div>
+      <mat-panel-title>
+          {{card.filename}}
+      </mat-panel-title>
+      <mat-panel-description>
+        <div class="tiny-icons">
+          <app-save-icon [save]="save" [iconFrame]="iconFrame" *ngFor="let save of card.saves" size="16px" margin="0"></app-save-icon>
+        </div>
+      </mat-panel-description>
+    </div>
+  </mat-expansion-panel-header>
+  
+  <p>
+    Blocks used: {{card.usedBlocks.length}}, Blocks free: {{card.freeBlocks.length}}
+    <mat-progress-bar
+        class="example-margin"
+        color="primary"
+        mode="determinate"
+        value="{{(card.usedBlocks / 15.0) * 100.0}}">
+    </mat-progress-bar>
+  </p>
+  <div cdkDropList (cdkDropListDropped)="drop($event)" [cdkDropListData]="card">
+    <mat-card *ngFor="let save of card.saves;let saveIndex=index" class="save" cdkDrag [cdkDragData]="saveIndex">
+      <mat-card-content>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+        <app-save-icon [save]="save" [iconFrame]="iconFrame"></app-save-icon>
+          <div>
+            <p>{{save.title}}</p>
+            <p>Blocks used: {{save.blockCount}}</p>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+          <button mat-button (click)="deleteSave(saveIndex)">DELETE</button>
+          <button mat-button (click)="downloadSave(saveIndex)">DOWNLOAD</button>
+        </mat-card-actions>
+    </mat-card>
+    <p *ngIf="card.saves.length === 0">No saves.</p>
+  </div>
+  <mat-action-row>
+    <button mat-button (click)="downloadCard()">DOWNLOAD</button>
+    <button mat-button (click)="closeCard(index)">CLOSE</button>
+  </mat-action-row>
+</mat-expansion-panel>
