@@ -16,6 +16,9 @@ jobs:
         with:
           node-version: '14'
 
+      - name: Install deps
+        run: npm install
+
       - name: Build
         run: npm run build
 
@@ -24,4 +27,4 @@ jobs:
         if: github.ref == 'refs/heads/main'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+          publish_dir: ./dist
